@@ -101,7 +101,7 @@ export default class Dependency extends EventEmitter {
 			});
 			dependency.findDependencies();
 
-			item.namespace = namespace;
+			item.namespace = context.modules.get(id);
 
 			me.emit('parse-after', dependency);
 

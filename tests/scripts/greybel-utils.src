@@ -1,4 +1,4 @@
-#import foo from "test/bar";
-#include "test/bar";
+#import foo from "./ascii";
+#include "./ascii";
 #envar TEST_ENV;
 debugger;

@@ -15,7 +15,8 @@ export class ResourceProvider {
 		return {
 			getTargetRelativeTo: (source: string, target: string): string => {
 				const base = path.resolve(source, '..');
-				return path.resolve(base, target + '.src');;
+				const result = path.resolve(base, target);
+				return fs.existsSync(result) ? result : result + '.src';
 			},
 			has: (target: string): boolean => {
 				return fs.existsSync(target);

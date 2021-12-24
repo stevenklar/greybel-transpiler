@@ -18,8 +18,7 @@ export default class Context {
 		const me = this;
 
 		me.modules = new NamespaceGenerator({
-			characters: options.modulesCharset,
-			forbidden: (new ParserValidator).getNatives()
+			characters: options.modulesCharset
 		});
 
 		me.variables = new NamespaceGenerator({
@@ -33,7 +32,10 @@ export default class Context {
 				'MAIN',
 				'module'
 			],
-			forbidden: options.variablesExcluded
+			forbidden: [
+				...(new ParserValidator).getNatives(),
+				...(options.variablesExcluded || [])
+			]
 		});
 
 		me.literals = new LiteralsMapper(me.variables);

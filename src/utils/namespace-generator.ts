@@ -21,6 +21,10 @@ export default class NamespaceGenerator {
 		me.forbidden = options.forbidden || [];
 		me.characters = options.characters || null;
 		me.defaultNamespaces = options.defaultNamespaces  || [];
+
+		for (const defaultNamespace of me.defaultNamespaces) {
+			me.createNamespace(defaultNamespace);
+		}
 	}
 
 	exclude(namespace: string): NamespaceGenerator {
@@ -46,19 +50,6 @@ export default class NamespaceGenerator {
 		me.buffer = [0];
 		me.mapping = new Map();
 		me.rmapping = new Map();
-		return me;
-	}
-
-	preset(characters: string): NamespaceGenerator {
-		const me = this;
-		let defaultNamespace;
-
-		if (characters) me.setCharset(characters);
-
-		for (defaultNamespace of me.defaultNamespaces) {
-			me.createNamespace(defaultNamespace);
-		}
-
 		return me;
 	}
 

@@ -1,8 +1,9 @@
 {
     "name": "greybel-transpiler",
     "version": "0.1.0",
-    "description": "",
-    "main": "index.js",
+    "description": "Transpiler",
+    "main": "dist/index",
+    "typings": "dist/index",
     "scripts": {
         "prepublishOnly": "npm run build",
         "build": "npm run clean && tsc -p .",
@@ -33,5 +34,9 @@
     },
     "dependencies": {
         "greybel-core": "^0.1.5"
-    }
+    },
+    "keywords": [
+        "greyscript",
+        "greyhack"
+    ]
 }

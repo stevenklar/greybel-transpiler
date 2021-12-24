@@ -294,7 +294,7 @@ export default function(
 		},
 		FeatureImportExpression: (item: ASTFeatureImportExpression, _data: TransformerDataObject): string => {
 			const requireMethodName = context.variables.get('__REQUIRE');
-			return make(item.name) + '=' + requireMethodName + '("' + item.name + '")';
+			return make(item.name) + '=' + requireMethodName + '("' + item.namespace + '")';
 		},
 		FeatureIncludeExpression: (item: ASTFeatureIncludeExpression, _data: TransformerDataObject): string => {
 			return make(item.chunk);

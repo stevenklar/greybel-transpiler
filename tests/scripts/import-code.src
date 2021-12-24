@@ -1,0 +1,2 @@
+import_code("/some/path":"./ascii")
+print(123)
