@@ -10,8 +10,8 @@ describe('parse', function() {
 			.forEach(file => {
 				const filepath = path.resolve(testFolder, file);
 
-				test(path.basename(filepath), () => {
-					const result = new Transpiler({ target: filepath }).parse();
+				test(path.basename(filepath), async () => {
+					const result = await (new Transpiler({ target: filepath }).parse());
 
 					expect(Object.values(result)).toMatchSnapshot();
 				});

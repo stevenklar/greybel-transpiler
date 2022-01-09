@@ -54,7 +54,7 @@ export default class Dependency extends EventEmitter {
 		return this.id;
 	}
 
-	findDependencies(): Dependency[] {
+	async findDependencies(): Promise<Dependency[]> {
 		const me = this;
 		const globalDependencyMap: Map<string, Dependency> = me.context.data.get('globalDependencyMap');
 		const resourceHandler = me.resourceHandler;
@@ -67,7 +67,7 @@ export default class Dependency extends EventEmitter {
 		let item;
 
 		for (item of items) {
-			const subTarget = resourceHandler.getTargetRelativeTo(me.target, item.path);
+			const subTarget = await resourceHandler.getTargetRelativeTo(me.target, item.path);
 			const id = md5(subTarget);
 			const namespace = context.modules.get(id);
 
@@ -79,12 +79,12 @@ export default class Dependency extends EventEmitter {
 				continue;
 			}
 
-			if (!resourceHandler.has(subTarget)) {
+			if (!await resourceHandler.has(subTarget)) {
 				throw new Error('Dependency ' + subTarget + ' does not exist...');
 			}
 
 			const isInclude = (item as ASTFeatureIncludeExpression).type === 'FeatureIncludeExpression';
-			const content = resourceHandler.get(subTarget);
+			const content = await resourceHandler.get(subTarget);
 
 			me.emit('parse-before', subTarget);
 			const parser = new Parser(content);
@@ -99,7 +99,7 @@ export default class Dependency extends EventEmitter {
 				isInclude,
 				context
 			});
-			dependency.findDependencies();
+			await dependency.findDependencies();
 
 			item.namespace = context.modules.get(id);
 

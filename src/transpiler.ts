@@ -71,7 +71,7 @@ export default class Transpiler {
 		return me.uglify ? uglifyFactory : defaultFactory;
 	}
 
-	parse(): TranspilerParseResult {
+	async parse(): Promise<TranspilerParseResult> {
 		const me = this;
 		const mapFactory = me.getBuildMapFactory();
 		const context = me.context;
@@ -80,7 +80,7 @@ export default class Transpiler {
 			resourceHandler: me.resourceHandler,
 			context: me.context
 		});
-		const targetParseResult: TargetParseResult = target.parse({
+		const targetParseResult: TargetParseResult = await target.parse({
 			disableLiteralsOptimization: me.disableLiteralsOptimization,
 			disableNamespacesOptimization: me.disableNamespacesOptimization
 		});

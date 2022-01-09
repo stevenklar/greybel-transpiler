@@ -37,25 +37,26 @@ export default class Target extends EventEmitter {
 	constructor(options: TargetOptions) {
 		super();
 
-		const me = this
-		const resourceHandler = options.resourceHandler;
+		const me = this;
 
-		if (!resourceHandler.has(options.target)) {
-			throw new Error('Target ' + options.target + ' does not exist...'); 
-		}
-
-		me.target = resourceHandler.resolve(options.target);
-		me.resourceHandler = resourceHandler;
+		me.target = options.target;
+		me.resourceHandler = options.resourceHandler;
 		me.context = options.context;
 	}
 
-	parse(options: TargetParseOptions): TargetParseResult {
+	async parse(options: TargetParseOptions): Promise<TargetParseResult> {
 		const me = this;
 		const resourceHandler = me.resourceHandler;
-		const context = me.context;
-		const content = resourceHandler.get(me.target);
+		const target = await resourceHandler.resolve(me.target);
 
-		me.emit('parse-before', me.target);
+		if (!await resourceHandler.has(target)) {
+			throw new Error('Target ' + target + ' does not exist...');
+		}
+
+		const context = me.context;
+		const content = await resourceHandler.get(target);
+
+		me.emit('parse-before', target);
 
 		const parser = new Parser(content);
 		const chunk = parser.parseChunk();
@@ -64,8 +65,8 @@ export default class Target extends EventEmitter {
 		const nativeImports: Map<string, TargetParseResultItem> = new Map();
 
 		for (const nativeImport of chunk.nativeImports) {
-			const subTarget = resourceHandler.getTargetRelativeTo(me.target, nativeImport);
-			const subContent = resourceHandler.get(subTarget);
+			const subTarget = await resourceHandler.getTargetRelativeTo(target, nativeImport);
+			const subContent = await resourceHandler.get(subTarget);
 			const subParser = new Parser(subContent);
 			const subChunk = subParser.parseChunk();
 			const subDependency = new Dependency({
@@ -74,7 +75,7 @@ export default class Target extends EventEmitter {
 				chunk: subChunk,
 				context
 			});
-			subDependency.findDependencies();
+			await subDependency.findDependencies();
 
 			namespaces = new Set([...namespaces, ...subChunk.namespaces]);
 			literals = literals.concat(subChunk.literals);
@@ -94,12 +95,12 @@ export default class Target extends EventEmitter {
 		}
 
 		const dependency = new Dependency({
-			target: me.target,
+			target,
 			resourceHandler,
 			chunk,
 			context
 		});
-		dependency.findDependencies();
+		await dependency.findDependencies();
 
 		return {
 			main: {
