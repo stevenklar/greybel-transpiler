@@ -15,6 +15,12 @@ describe('parse', function() {
 
 					expect(Object.values(result)).toMatchSnapshot();
 				});
+
+				test(path.basename(filepath) + ' uglify', async () => {
+					const result = await (new Transpiler({ target: filepath, uglify: true }).parse());
+
+					expect(Object.values(result)).toMatchSnapshot();
+				});
 			});
 	});
 });

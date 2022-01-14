@@ -124,7 +124,7 @@ export default class Transpiler {
 
 					processed.push('globals.' + tempVarForGlobal + '=globals');
 
-					Object.values(literalMapping).forEach(function(literal) {
+					literalMapping.forEach(function(literal) {
 						if (literal.namespace == null) return;
 						processed.push(tempVarForGlobal + '.' + literal.namespace + '=' + literal.literal.raw);
 					});
