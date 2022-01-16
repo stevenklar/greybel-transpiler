@@ -30,10 +30,13 @@ export default class Context {
 				'EXPORTED',
 				'__REQUIRE',
 				'MAIN',
-				'module'
+				'module',
+				'globals'
 			],
 			forbidden: [
-				...(new ParserValidator).getNatives(),
+				...(new ParserValidator)
+					.getNatives()
+					.filter((item: string) => item !== 'globals'),
 				...(options.variablesExcluded || [])
 			]
 		});
