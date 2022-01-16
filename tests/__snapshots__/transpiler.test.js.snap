@@ -246,6 +246,54 @@ F",
 ]
 `;
 
+exports[`parse default scripts default-args.src 1`] = `
+Array [
+  "globals.H=globals
+MODULES={}
+EXPORTED={}
+__REQUIRE=function(r)
+if not MODULES.hasIndex(r) then
+exit(((\\"Module \\" + r) + \\" cannot be found...\\"))
+end if
+module=MODULES[r]
+return @module(r).exports
+end function
+MAIN=function()
+test=function(arg1=0,arg2=\\"test\\")
+print(arg1)
+print(arg2)
+end function
+test()
+test(\\"foo\\",false)
+end function
+MAIN()",
+]
+`;
+
+exports[`parse default scripts default-args.src uglify 1`] = `
+Array [
+  "globals.H=globals
+C={}
+D={}
+E=function(r)
+if not C.hasIndex(r) then
+exit(((\\"Module \\" + r) + \\" cannot be found...\\"))
+end if
+G=C[r]
+return @G(r).exports
+end function
+F=function()
+I=function(J=0,K=\\"test\\")
+print(J)
+print(K)
+end function
+I
+I(\\"foo\\",false)
+end function
+F",
+]
+`;
+
 exports[`parse default scripts greybel-utils.src 1`] = `
 Array [
   "globals.H=globals
