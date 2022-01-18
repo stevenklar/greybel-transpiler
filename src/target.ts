@@ -2,7 +2,8 @@ import Context from './context';
 import {
 	Parser,
 	ASTChunk,
-	ASTLiteral
+	ASTLiteral,
+	ASTChunkAdvanced
 } from 'greybel-core';
 import { ResourceHandler } from './resource';
 import Dependency from './dependency';
@@ -59,7 +60,7 @@ export default class Target extends EventEmitter {
 		me.emit('parse-before', target);
 
 		const parser = new Parser(content);
-		const chunk = parser.parseChunk();
+		const chunk = parser.parseChunk() as ASTChunkAdvanced;
 		let namespaces : Set<string> = new Set([...chunk.namespaces]);
 		let literals = [].concat(chunk.literals);
 		const nativeImports: Map<string, TargetParseResultItem> = new Map();
@@ -68,7 +69,7 @@ export default class Target extends EventEmitter {
 			const subTarget = await resourceHandler.getTargetRelativeTo(target, nativeImport);
 			const subContent = await resourceHandler.get(subTarget);
 			const subParser = new Parser(subContent);
-			const subChunk = subParser.parseChunk();
+			const subChunk = subParser.parseChunk() as ASTChunkAdvanced;
 			const subDependency = new Dependency({
 				target: subTarget,
 				resourceHandler,

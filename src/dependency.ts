@@ -88,7 +88,7 @@ export default class Dependency extends EventEmitter {
 
 			me.emit('parse-before', subTarget);
 			const parser = new Parser(content);
-			const chunk = parser.parseChunk();
+			const chunk = parser.parseChunk() as ASTChunkAdvanced;
 
 			item.chunk = chunk;
 

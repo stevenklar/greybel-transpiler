@@ -10,7 +10,7 @@ export const HEADER_BOILERPLATE: ASTChunk = new Parser(
 	module = MODULES[r]
 	return @module(r).exports
 	end function`
-).parseChunk();
+).parseChunk() as ASTChunk;
 
 export const MODULE_BOILERPLATE: ASTChunk = new Parser(
 	`MODULES["$0"] = function(r)
@@ -24,11 +24,11 @@ export const MODULE_BOILERPLATE: ASTChunk = new Parser(
 	EXPORTED[r] = module
 	return EXPORTED[r]
 	end function`
-).parseChunk();
+).parseChunk() as ASTChunk;
 
 export const MAIN_BOILERPLATE: ASTChunk = new Parser(
 	`MAIN = function()
 	"$0"
 	end function
 	MAIN()`
-).parseChunk();
+).parseChunk() as ASTChunk;
