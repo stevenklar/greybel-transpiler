@@ -86,7 +86,7 @@ export default function(
 			return '{' + fields.join(',') + '}';
 		},
 		MapKeyString: (item: ASTMapKeyString, _data: TransformerDataObject): string => {
-			const key = make(item.key);
+			const key = `"${item.key}"`;
 			const value = make(item.value);
 
 			return [key, value].join(':')
@@ -365,7 +365,7 @@ export default function(
 			return body.join('\n');
 		},
 		ImportCodeExpression: (item: ASTImportCodeExpression, _data: TransformerDataObject): string => {
-			const dir = make(item.gameDirectory);
+			const dir = `"${item.gameDirectory}"`;
 			return 'import_code(' + dir + ')';
 		}
 	};
