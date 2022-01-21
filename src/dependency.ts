@@ -54,7 +54,7 @@ export default class Dependency extends EventEmitter {
 		return this.id;
 	}
 
-	async findDependencies(): Promise<Dependency[]> {
+	async findDependencies(namespaces: string[]): Promise<Dependency[]> {
 		const me = this;
 		const globalDependencyMap: Map<string, Dependency> = me.context.data.get('globalDependencyMap');
 		const resourceHandler = me.resourceHandler;
@@ -90,6 +90,7 @@ export default class Dependency extends EventEmitter {
 			const parser = new Parser(content);
 			const chunk = parser.parseChunk() as ASTChunkAdvanced;
 
+			namespaces.push(...Array.from(chunk.namespaces));
 			item.chunk = chunk;
 
 			const dependency = new Dependency({
@@ -99,7 +100,7 @@ export default class Dependency extends EventEmitter {
 				isInclude,
 				context
 			});
-			await dependency.findDependencies();
+			await dependency.findDependencies(namespaces);
 
 			item.namespace = context.modules.get(id);
 

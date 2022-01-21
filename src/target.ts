@@ -61,8 +61,8 @@ export default class Target extends EventEmitter {
 
 		const parser = new Parser(content);
 		const chunk = parser.parseChunk() as ASTChunkAdvanced;
-		let namespaces : Set<string> = new Set([...chunk.namespaces]);
-		let literals = [].concat(chunk.literals);
+		const namespaces = [].concat(Array.from(chunk.namespaces));
+		const literals = [].concat(chunk.literals);
 		const nativeImports: Map<string, TargetParseResultItem> = new Map();
 
 		for (const nativeImport of chunk.nativeImports) {
@@ -76,23 +76,15 @@ export default class Target extends EventEmitter {
 				chunk: subChunk,
 				context
 			});
-			await subDependency.findDependencies();
+			await subDependency.findDependencies(namespaces);
 
-			namespaces = new Set([...namespaces, ...subChunk.namespaces]);
-			literals = literals.concat(subChunk.literals);
+			namespaces.push(...Array.from(subChunk.namespaces));
+			literals.push(...subChunk.literals);
 
 			nativeImports.set(nativeImport, {
 				chunk: subChunk,
 				dependency: subDependency
 			});
-		}
-
-		if (!options.disableNamespacesOptimization) {
-			namespaces.forEach((namespace: string) => context.variables.createNamespace(namespace));
-		}
-
-		if (!options.disableLiteralsOptimization) {
-			literals.forEach((literal: ASTLiteral) => context.literals.add(literal));
 		}
 
 		const dependency = new Dependency({
@@ -101,7 +93,16 @@ export default class Target extends EventEmitter {
 			chunk,
 			context
 		});
-		await dependency.findDependencies();
+		await dependency.findDependencies(namespaces);
+
+		if (!options.disableNamespacesOptimization) {
+			const uniqueNamespaces = new Set(namespaces);
+			uniqueNamespaces.forEach((namespace: string) => context.variables.createNamespace(namespace));
+		}
+
+		if (!options.disableLiteralsOptimization) {
+			literals.forEach((literal: ASTLiteral) => context.literals.add(literal));
+		}
 
 		return {
 			main: {
