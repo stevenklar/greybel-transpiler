@@ -5,7 +5,7 @@ import {
 	ASTFeatureIncludeExpression,
 	ASTFeatureImportExpression
 } from 'greybel-core';
-import md5 from './utils/md5';
+import md5 from 'blueimp-md5';
 import Context from './context';
 import EventEmitter from 'events';
 import { ResourceHandler } from './resource';

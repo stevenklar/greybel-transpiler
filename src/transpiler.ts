@@ -23,6 +23,7 @@ export interface TranspilerOptions {
 	excludedNamespaces?: string[];
 	disableLiteralsOptimization?: boolean;
 	disableNamespacesOptimization?: boolean;
+	environmentVariables?: Map<string, string>;
 
 	resourceHandler?: ResourceHandler;
 }
@@ -41,6 +42,7 @@ export default class Transpiler {
 	installer: boolean;
 	disableLiteralsOptimization: boolean;
 	disableNamespacesOptimization: boolean;
+	environmentVariables: Map<string, string>;
 
 	constructor(options: TranspilerOptions) {
 		const me = this;
@@ -61,6 +63,7 @@ export default class Transpiler {
 		me.installer = options.installer || false;
 		me.disableLiteralsOptimization = options.disableLiteralsOptimization || false;
 		me.disableNamespacesOptimization = options.disableNamespacesOptimization || false;
+		me.environmentVariables = options.environmentVariables || new Map();
 	}
 
 	getBuildMapFactory(): (

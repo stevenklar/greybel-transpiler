@@ -1,5 +1,5 @@
 import { ASTLiteral } from 'greybel-core';
-import md5 from './md5';
+import md5 from 'blueimp-md5';
 import NamespaceGenerator from './namespace-generator';
 
 export interface LiteralMetaData {

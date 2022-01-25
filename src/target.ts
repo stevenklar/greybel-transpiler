@@ -13,6 +13,7 @@ export interface TargetOptions {
 	target: string;
 	resourceHandler: ResourceHandler;
 	context: Context;
+	environmentVariables?: Map<string, string>
 }
 
 export interface TargetParseOptions {
@@ -34,6 +35,7 @@ export default class Target extends EventEmitter {
 	target: string;
 	resourceHandler: ResourceHandler;
 	context: Context;
+	environmentVariables: Map<string, string>;
 
 	constructor(options: TargetOptions) {
 		super();
@@ -43,6 +45,7 @@ export default class Target extends EventEmitter {
 		me.target = options.target;
 		me.resourceHandler = options.resourceHandler;
 		me.context = options.context;
+		me.environmentVariables = options.environmentVariables || new Map();
 	}
 
 	async parse(options: TargetParseOptions): Promise<TargetParseResult> {
