@@ -162,24 +162,24 @@ export default function(
 				clauses.push(make(clausesItem));
 			}
 
-			return clauses.join(' ');
+			return clauses.join('\n') + '\nend if';
 		},
 		IfShortcutClause: (item: ASTIfClause, _data: TransformerDataObject): string => {
 			const condition = make(item.condition);
 			const statement = make(item.body[0]);
 
-			return 'if ' + condition + ' then ' + statement;
+			return 'if ' + condition + ' then\n' + statement;
 		},
 		ElseifShortcutClause: (item: ASTIfClause, _data: TransformerDataObject): string => {
 			const condition = make(item.condition);
 			const statement = make(item.body[0]);
 
-			return ' else if ' + condition + ' then ' + statement;
+			return 'else if ' + condition + ' then\n' + statement;
 		},
 		ElseShortcutClause: (item: ASTElseClause, _data: TransformerDataObject): string => {
 			const statement = make(item.body[0]);
 
-			return ' else ' + statement;
+			return 'else\n' + statement;
 		},
 		NilLiteral: (item: ASTLiteral, _data: TransformerDataObject): string => {
 			return 'null';

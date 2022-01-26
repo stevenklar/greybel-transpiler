@@ -652,6 +652,122 @@ F",
 ]
 `;
 
+exports[`parse default scripts if-scuffed.src 1`] = `
+Array [
+  "globals.H=globals
+H.I=true
+H.J=\\"true - 3\\"
+H.K=\\"true - 4\\"
+H.L=\\"true - 5\\"
+MODULES={}
+EXPORTED={}
+__REQUIRE=function(r)
+if not MODULES.hasIndex(r) then
+exit(((\\"Module \\" + r) + \\" cannot be found...\\"))
+end if
+module=MODULES[r]
+return @module(r).exports
+end function
+MAIN=function()
+if true then
+print(\\"true - 1\\")
+end if
+if true then
+print(\\"true - 2\\")
+else if true then
+print(\\"true - 2\\")
+end if
+if true then
+print(\\"true - 3\\")
+else if true then
+print(\\"true - 3\\")
+else if true then
+print(\\"true - 3\\")
+end if
+if true then
+print(\\"true - 4\\")
+else if true then
+print(\\"true - 4\\")
+else if true then
+print(\\"true - 4\\")
+else
+print(\\"true - 4\\")
+end if
+if true then
+print(\\"true - 5\\")
+else if true then
+print(\\"true - 5\\")
+else
+print(\\"true - 5\\")
+end if
+if true then
+print(\\"true - 6\\")
+else
+print(\\"true - 6\\")
+end if
+end function
+MAIN()",
+]
+`;
+
+exports[`parse default scripts if-scuffed.src uglify 1`] = `
+Array [
+  "globals.H=globals
+H.I=true
+H.J=\\"true - 3\\"
+H.K=\\"true - 4\\"
+H.L=\\"true - 5\\"
+C={}
+D={}
+E=function(r)
+if not C.hasIndex(r) then
+exit(((\\"Module \\" + r) + \\" cannot be found...\\"))
+end if
+G=C[r]
+return @G(r).exports
+end function
+F=function()
+if I then
+print(\\"true - 1\\")
+end if
+if I then
+print(\\"true - 2\\")
+else if I then
+print(\\"true - 2\\")
+end if
+if I then
+print(J)
+else if I then
+print(J)
+else if I then
+print(J)
+end if
+if I then
+print(K)
+else if I then
+print(K)
+else if I then
+print(K)
+else
+print(K)
+end if
+if I then
+print(L)
+else if I then
+print(L)
+else
+print(L)
+end if
+if I then
+print(\\"true - 6\\")
+else
+print(\\"true - 6\\")
+end if
+end function
+F",
+]
+`;
+
 exports[`parse default scripts import-code.src 1`] = `
 Array [
   "globals.H=globals
@@ -1042,7 +1158,9 @@ PasswordGenerator.increaseBuffer=function(i)
 me=self
 currentCharBuffer=me.buffer
 maxBufferSize=me.characters.len
-if (i == null) then i=(currentCharBuffer.len - 1)
+if (i == null) then
+i=(currentCharBuffer.len - 1)
+end if
 p=currentCharBuffer[i]
 p=(p + 1)
 currentCharBuffer[i]=p
@@ -1064,7 +1182,9 @@ index=0
 while (index < currentCharBuffer.len)
 pointer=currentCharBuffer[index]
 password=(password + generatorCharacters[pointer])
-if (index == (currentCharBuffer.len - 1)) then self.increaseBuffer()
+if (index == (currentCharBuffer.len - 1)) then
+self.increaseBuffer()
+end if
 index=(index + 1)
 end while
 if (currentCharBuffer.len > me.MAX_PASSWORD_LENGTH) then
@@ -1114,7 +1234,9 @@ I.increaseBuffer=function(T)
 P=self
 U=P.buffer
 V=P.characters.len
-if (T == null) then T=(U.len - 1)
+if (T == null) then
+T=(U.len - 1)
+end if
 X=U[T]
 X=(X + 1)
 U[T]=X
@@ -1136,7 +1258,9 @@ c=0
 while (c < U.len)
 d=U[c]
 b=(b + a[d])
-if (c == (U.len - 1)) then self.increaseBuffer
+if (c == (U.len - 1)) then
+self.increaseBuffer
+end if
 c=(c + 1)
 end while
 if (U.len > P.MAX_PASSWORD_LENGTH) then
@@ -1239,9 +1363,15 @@ me=self
 me.defaultSecret=defaultSecret
 me.table=charset
 me.hashFn=@hashFn
-if (@hashFn == null) then me.hashFn=@md5
-if (charset == null) then me.table=me.defaultCharset
-if (me.table.len != 64) then (new me.Error).constructor(\\"Invalid charset $0...\\",[me.table]).throw()
+if (@hashFn == null) then
+me.hashFn=@md5
+end if
+if (charset == null) then
+me.table=me.defaultCharset
+end if
+if (me.table.len != 64) then
+(new me.Error).constructor(\\"Invalid charset $0...\\",[me.table]).throw()
+end if
 return me
 end function
 Crypto.getHash=function(pw)
@@ -1256,7 +1386,9 @@ return hash
 end function
 Crypto.encrypt=function(str,pw)
 me=self
-if (pw == null) then pw=me.defaultSecret
+if (pw == null) then
+pw=me.defaultSecret
+end if
 hash=me.getHash(pw)
 hashPointer=0
 output=[]
@@ -1310,7 +1442,9 @@ return output.join(\\"\\")
 end function
 Crypto.decrypt=function(str,pw)
 me=self
-if (pw == null) then pw=me.defaultSecret
+if (pw == null) then
+pw=me.defaultSecret
+end if
 hash=me.getHash(pw)
 hashPointer=0
 hashLength=hash.len
@@ -1337,14 +1471,18 @@ bitStorage=buffer
 end if
 if (currentBit % 4) then
 expectedHashIndex=(((floor((hashPointer / 3)) * 3) % hashLength) - 1)
-if not hash.hasIndex(expectedHashIndex) then break
+if not hash.hasIndex(expectedHashIndex) then
+break
+end if
 m=hash[expectedHashIndex]
 operation=AND((-2 * bitCounter),6)
 operation=RSHIFT(bitStorage,operation)
 operation=AND(255,operation)
 if (operation != 0) then
 charCode=(operation - m)
-if (charCode > me.maxCharCode) then break
+if (charCode > me.maxCharCode) then
+break
+end if
 output.push(char(charCode))
 end if
 hashPointer=(hashPointer + 1)
@@ -1445,9 +1583,15 @@ n=self
 n.defaultSecret=j
 n.table=m
 n.hashFn=@l
-if (@l == Ab) then n.hashFn=@md5
-if (m == Ab) then n.table=n.defaultCharset
-if (n.table.len != 64) then (new n.Error).constructor(\\"Invalid charset $0...\\",[n.table]).throw
+if (@l == Ab) then
+n.hashFn=@md5
+end if
+if (m == Ab) then
+n.table=n.defaultCharset
+end if
+if (n.table.len != 64) then
+(new n.Error).constructor(\\"Invalid charset $0...\\",[n.table]).throw
+end if
 return n
 end function
 h.getHash=function(q)
@@ -1462,7 +1606,9 @@ return hash
 end function
 h.encrypt=function(str,q)
 n=self
-if (q == Ab) then q=n.defaultSecret
+if (q == Ab) then
+q=n.defaultSecret
+end if
 hash=n.getHash(q)
 w=0
 x=[]
@@ -1516,7 +1662,9 @@ return x.join(\\"\\")
 end function
 h.decrypt=function(str,q)
 n=self
-if (q == Ab) then q=n.defaultSecret
+if (q == Ab) then
+q=n.defaultSecret
+end if
 hash=n.getHash(q)
 w=0
 AQ=hash.len
@@ -1543,14 +1691,18 @@ AS=AN
 end if
 if (AT % 4) then
 AU=(((floor((w / 3)) * 3) % AQ) - Ad)
-if not hash.hasIndex(AU) then break
+if not hash.hasIndex(AU) then
+break
+end if
 f=hash[AU]
 AV=AE((-2 * AR),6)
 AV=AK(AS,AV)
 AV=AE(255,AV)
 if (AV != 0) then
 AW=(AV - f)
-if (AW > n.maxCharCode) then break
+if (AW > n.maxCharCode) then
+break
+end if
 x.push(char(AW))
 end if
 w=(w + Ad)
@@ -1601,11 +1753,17 @@ end function
 Random.gen=function(min,max,seed,inc)
 me=self
 pool=me.pool
-if (inc == null) then inc=true
-if (seed == null) then seed=me.defaultSeed
+if (inc == null) then
+inc=true
+end if
+if (seed == null) then
+seed=me.defaultSeed
+end if
 if pool.hasIndex(seed) then
 ps=pool[seed]
-if not inc then return ps.value
+if not inc then
+return ps.value
+end if
 ps.generation=(ps.generation + 1)
 val=floor(((rnd((ps.value + ps.generation)) * (max - min)) + min))
 ps.value=val
@@ -1625,7 +1783,9 @@ temp=me.gen(min,max,seed)
 result.push(temp)
 index=(index + 1)
 end while
-if (keepPool != true) then me.pool.remove(seed)
+if (keepPool != true) then
+me.pool.remove(seed)
+end if
 return result
 end function
 Random.get=function(min,max)
@@ -1669,11 +1829,17 @@ end function
 I.gen=function(U,V,M,W)
 X=self
 J=X.pool
-if (W == null) then W=true
-if (M == null) then M=X.defaultSeed
+if (W == null) then
+W=true
+end if
+if (M == null) then
+M=X.defaultSeed
+end if
 if J.hasIndex(M) then
 Y=J[M]
-if not W then return Y.value
+if not W then
+return Y.value
+end if
 Y.generation=(Y.generation + 1)
 N=floor(((rnd((Y.value + Y.generation)) * (V - U)) + U))
 Y.value=N
@@ -1693,7 +1859,9 @@ g=X.gen(U,V,M)
 f.push(g)
 e=(e + 1)
 end while
-if (d != true) then X.pool.remove(M)
+if (d != true) then
+X.pool.remove(M)
+end if
 return f
 end function
 I.get=function(U,V)
