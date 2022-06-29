@@ -83,10 +83,7 @@ export default class Transpiler {
 			resourceHandler: me.resourceHandler,
 			context: me.context
 		});
-		const targetParseResult: TargetParseResult = await target.parse({
-			disableLiteralsOptimization: me.disableLiteralsOptimization,
-			disableNamespacesOptimization: me.disableNamespacesOptimization
-		});
+		const targetParseResult: TargetParseResult = await target.parse(me);
 
 		//create builder
 		const tempVarForGlobal = context.variables.createNamespace('globals');
